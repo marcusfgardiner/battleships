@@ -1,16 +1,16 @@
 let battleshipGrid = (n, array) => {
-  let outputString = ''
-  outputString = buildOutputString(n, array, outputString);
-  return outputString
+  let outputArray = []
+  outputArray = buildGrid(n, array, outputArray);
+  return outputArray
 }
 
-let buildOutputString = (n, array, outputString) => {
+let buildGrid = (n, array, outputArray) => {
   array.map(function(element, i) {
-    outputString += dotsStars(element);
+    outputArray.push(dotsStars(element));
     if (isNewGridLine(i, n, array))
-      { outputString += '\n' }
+      { outputArray.push('\n') }
   });
-  return outputString
+  return outputArray.join('')
 }
 
 let isNewGridLine = (i, n, array) => {
@@ -24,15 +24,42 @@ let dotsStars = element => {
   else {
     return '*'
   }
-}
-
-let test = (n, array) => {
-  let output = battleshipGrid(n, array)
-  console.log(output)
-  if (output === '.*\n.*') {
-    console.log('Test passed')
-  }
-  else { console.log('Test failed') }
 };
 
-test(2, [0, 1, 0, 1]);
+let isShip = (grid, x, y) => {
+  grid_array = grid.split('\n')
+  row = grid_array[(y-1)]
+  row_array = row.split('')
+  space = row_array[(x-1)]
+  if (space === '*'){
+    return true
+  };
+};
+
+let attack = (grid, x, y) => {
+  if( isShip(grid, x, y) )
+    { updated_grid = console.log(grid) }
+    return updated_grid
+};
+
+let testGrid = (n, array) => {
+  let output = battleshipGrid(n, array)
+  console.log(output)
+  if (output === '.*\n..') {
+    console.log('Grid','Test passed')
+  }
+  else { console.log('Grid','Test failed') }
+};
+
+testGrid(2, [0, 1, 0, 0]);
+
+let testHitShip = (n, array, x, y) => {
+  let output = battleshipGrid(n, array)
+  let hitOutput = attack(output, x, y)
+  if (output === '.@\n..') {
+    console.log('Attack Test passed')
+  }
+  else { console.log('Attack Test failed') }
+};
+
+testHitShip(2, [0, 1, 0, 0], 2, 1);
