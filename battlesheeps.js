@@ -1,5 +1,7 @@
 var BattleshipGrid = function (n, array) {
   this.grid = []
+  this.n = n
+  this.array = array
   this.buildGrid(n, array);
 }
 
@@ -7,14 +9,18 @@ BattleshipGrid.prototype.buildGrid = function (n, array) {
   newGrid = this
   array.map(function(element, i) {
     newGrid.grid.push(newGrid.dotsStars(element));
-    if (newGrid.isNewGridLine(i, n, array))
-      { newGrid.grid.push('\n') }
   });
-  this.grid = this.grid.join('')
 }
 
-BattleshipGrid.prototype.isNewGridLine = function (i, n, array) {
-  return ((i+1) % n === 0 && ((i+1) < array.length))
+BattleshipGrid.prototype.printGrid = function () {
+  let splicePoint = this.n
+  let extra = 0
+  printedGrid = this.grid
+  for (i = 0; i < (this.n - 1); i++) {
+    printedGrid.splice((splicePoint * (i+1) + extra), 0, '\n')
+    extra++
+  }
+  return printedGrid.join('')
 };
 
 BattleshipGrid.prototype.dotsStars = function (element) {
@@ -26,42 +32,34 @@ BattleshipGrid.prototype.dotsStars = function (element) {
   }
 };
 
-BattleshipGrid.prototype.isShip = function (x, y) {
-  grid_array = grid.split('\n')
-  row = grid_array[(y-1)]
-  row_array = row.split('')
-  space = row_array[(x-1)]
-  if (space === '*'){
-    return true
-  };
-};
-
-BattleshipGrid.prototype.attack = function (grid, x, y) {
-  if( isShip(grid, x, y) )
-    { updated_grid = console.log(grid) }
-    return updated_grid
+BattleshipGrid.prototype.attack = function (x, y) {
+    index = ((this.n * (y-1)) + (x-1))
+    if (this.grid[index] === '*') {
+      this.grid[index] = '@'
+    }
 };
 
 let testGrid = function (n, array) {
   newGrid = new BattleshipGrid(n, array);
-  let output = newGrid.grid
+  let output = newGrid.printGrid();
   console.log(output)
-  if (output === '.*\n..') {
+  if (output === '.*.\n.*.\n***') {
     console.log('Grid','Test passed')
   }
   else { console.log('Grid','Test failed') }
 };
 
-testGrid(2, [0, 1, 0, 0]);
-//
-// let testHitShip = function (n, array, x, y) {
-//   newGrid = new BattleshipGrid(n, array);
-//   let output = newGrid.grid
-//   let hitOutput = attack(x, y)
-//   if (hitOutput === '.@\n..') {
-//     console.log('Attack Test passed')
-//   }
-//   else { console.log('Attack Test failed') }
-// };
-//
-// testHitShip(2, [0, 1, 0, 0], 2, 1);
+testGrid(3, [0, 1, 0, 0,1,0,1,1,1]);
+
+let testHitShip = function (n, array, x, y) {
+  newGrid = new BattleshipGrid(n, array);
+  newGrid.attack(x, y)
+  let output = newGrid.printGrid();
+  console.log(output)
+  if (output === '.*.\n.@.\n***') {
+    console.log('Attack Test passed')
+  }
+  else { console.log('Attack Test failed') }
+};
+
+testHitShip(3, [0, 1, 0, 0, 1, 0, 1, 1, 1], 2, 2);
