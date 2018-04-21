@@ -32,7 +32,7 @@ BattleshipGrid.prototype.dotsStars = function (element) {
   }
 };
 
-BattleshipGrid.prototype.attack = function (x, y) {
+BattleshipGrid.prototype.updateGridAttack = function (x, y) {
     index = ((this.n * (y-1)) + (x-1))
     if (this.grid[index] === '*') {
       this.grid[index] = '@'
@@ -53,7 +53,7 @@ testGrid(3, [0, 1, 0, 0,1,0,1,1,1]);
 
 let testHitShip = function (n, array, x, y) {
   newGrid = new BattleshipGrid(n, array);
-  newGrid.attack(x, y)
+  newGrid.updateGridAttack(x, y)
   let output = newGrid.printGrid();
   console.log(output)
   if (output === '.*.\n.@.\n***') {
