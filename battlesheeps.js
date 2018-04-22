@@ -53,6 +53,13 @@ BattleshipGrid.prototype.computerAttack = function () {
     x = this.movesArray[i][0]
     y = this.movesArray[i][1]
     // this.movesArray
+
+    let index = array.indexOf(this.movesArray[i]);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+    console.log(this.movesArray)
+
     this.updateGridAttack(x, y);
     if (this.isGameOver()) {
       break;
