@@ -6,6 +6,7 @@ var BattleshipGrid = function (n, array) {
   this.moveCounter = 0
   this.movesArray = []
   this.possibleMoves();
+  this.randomNumberCeiling = this.grid.length
 }
 
 BattleshipGrid.prototype.buildGrid = function (n, array) {
@@ -43,7 +44,7 @@ BattleshipGrid.prototype.updateGridAttack = function (x, y) {
 
 BattleshipGrid.prototype.isShip = function (x, y) {
   index = ((this.n * (y-1)) + (x-1))
-  return this.grid[index] === '*'
+  return (this.grid[index] === '*')
 };
 
 BattleshipGrid.prototype.isGameOver = function () {
@@ -51,26 +52,46 @@ BattleshipGrid.prototype.isGameOver = function () {
 };
 
 BattleshipGrid.prototype.computerAttack = function () {
-  randomNumberCeiling = this.grid.length
   for (i = 0; i < max ; i++) {
-    this.moveCounter ++
-    console.log('moveCounter', this.moveCounter)
-    move = this.randomMove();
+    console.log('moveCounter', i)
+
+    randomNumber = getRandomInt(this.randomNumberCeiling)
+
+    x = this.movesArray[randomNumber][0]
+    y = this.movesArray[randomNumber][1]
+
+    isSuccess = this.move(x, y, randomNumber);
+    if (isSuccess) {
+      console.log('attempt TARGETED move')
+      this.targetedMove(x, y, randomNumber);
+    };
     console.log(this.movesArray)
-    this.updateGridAttack(move[0], move[1]);
     if (this.isGameOver()) {
       break;
     }
   }
 };
 
-BattleshipGrid.prototype.randomMove = function () {
-  randomNumber = getRandomInt(randomNumberCeiling)
-  randomNumberCeiling --
-  x = this.movesArray[randomNumber][0]
-  y = this.movesArray[randomNumber][1]
-  this.movesArray.splice(randomNumber, 1);
-  return [x,y]
+BattleshipGrid.prototype.targetedMove = function (x, y, number) {
+  movesArrayString = JSON.stringify(this.movesArray);
+  nextMoveString = JSON.stringify([x + 1, y]);
+  console.log('NEXT MOVE',nextMoveString)
+  if (movesArrayString.indexOf(nextMoveString) !== -1) {
+    console.log('TARGETED MOVE SUCCESSFUL')
+    this.move(x + 1, y, number);
+  };
+};
+
+BattleshipGrid.prototype.move = function (x, y, number) {
+  this.randomNumberCeiling --
+  let isHit = false
+  if (this.isShip(x, y)) {
+    console.log('SHHIPP!')
+    isHit = true
+  };
+  this.updateGridAttack(x, y);
+  this.movesArray.splice(number, 1);
+  return isHit
 };
 
 function getRandomInt(max) {
