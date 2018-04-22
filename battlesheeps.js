@@ -5,6 +5,7 @@ var BattleshipGrid = function (n, array) {
   this.buildGrid(n, array);
   this.moveCounter = 0
   this.movesArray = []
+  this.possibleMoves();
 }
 
 BattleshipGrid.prototype.buildGrid = function (n, array) {
@@ -46,19 +47,13 @@ BattleshipGrid.prototype.isGameOver = function () {
 };
 
 BattleshipGrid.prototype.computerAttack = function () {
-  x = 1
-  y = 1
-  n = this.n + 1
-  max = this.grid.length
   for (i = 0; i < max ; i++) {
     this.moveCounter ++
     console.log('moveCounter', this.moveCounter)
+    x = this.movesArray[i][0]
+    y = this.movesArray[i][1]
+    // this.movesArray
     this.updateGridAttack(x, y);
-    x++
-    if (x === n) {
-      x = 1;
-      y ++
-      };
     if (this.isGameOver()) {
       break;
     }
@@ -92,58 +87,58 @@ let testPossibleMoves = function (n, array) {
 testPossibleMoves(4, [1, 1, 0, 1,0,0,0,1,0,0, 0, 1, 0, 0, 0 ,0]);
 
 
-//
-// let testGrid = function (n, array) {
-//   newGrid = new BattleshipGrid(n, array);
-//   let output = newGrid.printGrid();
-//   console.log(output)
-//   if (output === '.*.\n.*.\n***') {
-//     console.log('Grid','Test passed')
-//   }
-//   else { console.log('Grid','Test failed') }
-// };
-//
-// testGrid(3, [0, 1, 0, 0,1,0,1,1,1]);
-//
-// let testHitShip = function (n, array, x, y) {
-//   newGrid = new BattleshipGrid(n, array);
-//   newGrid.updateGridAttack(x, y)
-//   let output = newGrid.printGrid();
-//   console.log(output)
-//   if (output === '.*.\n.@.\n***') {
-//     console.log('Attack Test passed')
-//   }
-//   else { console.log('Attack Test failed') }
-// };
-//
-// testHitShip(3, [0, 1, 0, 0, 1, 0, 1, 1, 1], 2, 2);
-//
-// let testGameOver = function (n, array, x, y) {
-//   newGrid = new BattleshipGrid(n, array);
-//   newGrid.updateGridAttack(x, y)
-//   gameOver = newGrid.isGameOver();
-//   console.log(gameOver)
-//   let output = newGrid.printGrid();
-//   console.log(output)
-//   if (gameOver === true) {
-//     console.log('Game over - test passed')
-//   }
-//   else { console.log('Game over - test failed') }
-// };
-//
-// testGameOver(3, [0, 0, 0, 0, 0, 0, 0, 1, 0], 2, 3);
-//
-// let testcomputerAttack = function(n, array) {
-//   newGrid = new BattleshipGrid(n, array);
-//   newGrid.computerAttack();
-//   gameOver = newGrid.isGameOver();
-//   console.log(gameOver)
-//   let output = newGrid.printGrid();
-//   console.log(output)
-//   if (gameOver === true) {
-//     console.log('Computer game over - test passed')
-//   }
-//   else { console.log('Computer game over - test failed') }
-// };
-//
-// testcomputerAttack(4, [1, 1, 0, 1,0,0,0,1,0,0, 0, 1, 0, 0, 0 ,0]);
+
+let testGrid = function (n, array) {
+  newGrid = new BattleshipGrid(n, array);
+  let output = newGrid.printGrid();
+  console.log(output)
+  if (output === '.*.\n.*.\n***') {
+    console.log('Grid','Test passed')
+  }
+  else { console.log('Grid','Test failed') }
+};
+
+testGrid(3, [0, 1, 0, 0,1,0,1,1,1]);
+
+let testHitShip = function (n, array, x, y) {
+  newGrid = new BattleshipGrid(n, array);
+  newGrid.updateGridAttack(x, y)
+  let output = newGrid.printGrid();
+  console.log(output)
+  if (output === '.*.\n.@.\n***') {
+    console.log('Attack Test passed')
+  }
+  else { console.log('Attack Test failed') }
+};
+
+testHitShip(3, [0, 1, 0, 0, 1, 0, 1, 1, 1], 2, 2);
+
+let testGameOver = function (n, array, x, y) {
+  newGrid = new BattleshipGrid(n, array);
+  newGrid.updateGridAttack(x, y)
+  gameOver = newGrid.isGameOver();
+  console.log(gameOver)
+  let output = newGrid.printGrid();
+  console.log(output)
+  if (gameOver === true) {
+    console.log('Game over - test passed')
+  }
+  else { console.log('Game over - test failed') }
+};
+
+testGameOver(3, [0, 0, 0, 0, 0, 0, 0, 1, 0], 2, 3);
+
+let testcomputerAttack = function(n, array) {
+  newGrid = new BattleshipGrid(n, array);
+  newGrid.computerAttack();
+  gameOver = newGrid.isGameOver();
+  console.log(gameOver)
+  let output = newGrid.printGrid();
+  console.log(output)
+  if (gameOver === true) {
+    console.log('Computer game over - test passed')
+  }
+  else { console.log('Computer game over - test failed') }
+};
+
+testcomputerAttack(4, [1, 1, 0, 1,0,0,0,1,0,0, 0, 1, 0, 0, 0 ,0]);
