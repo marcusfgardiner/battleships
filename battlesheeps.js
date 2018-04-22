@@ -177,4 +177,4 @@ let testcomputerAttack = function(n, array) {
   else { console.log('Computer game over - test failed') }
 };
 
-testcomputerAttack(4, [1, 1, 0, 1,0,0,0,1,0,0, 0, 1, 0, 0, 0 ,0]);
+testcomputerAttack(4, [1, 1, 1, 1,0,0,0,1,0,0, 0, 1, 0, 0, 0 ,0]);
