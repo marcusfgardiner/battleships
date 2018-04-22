@@ -53,7 +53,12 @@ BattleshipGrid.prototype.isGameOver = function () {
 
 BattleshipGrid.prototype.computerAttack = function () {
   for (i = 0; i < max ; i++) {
-    console.log('moveCounter', i)
+    if (this.isGameOver()) {
+      console.log('GAME OVER')
+      console.log(this.printGrid())
+      process.exit(55-i)//exit code = 45
+      console.log('Process exited')
+    }
 
     randomNumber = getRandomInt(this.randomNumberCeiling)
 
@@ -61,32 +66,54 @@ BattleshipGrid.prototype.computerAttack = function () {
     y = this.movesArray[randomNumber][1]
 
     isSuccess = this.move(x, y, randomNumber);
+
     if (isSuccess) {
       console.log('attempt TARGETED move')
       this.targetedMove(x, y, randomNumber);
     };
     console.log(this.movesArray)
-    if (this.isGameOver()) {
-      break;
-    }
   }
 };
 
-BattleshipGrid.prototype.targetedMove = function (x, y, number) {
+BattleshipGrid.prototype.targetedMove = function (x, y, number, y_switch) {
   movesArrayString = JSON.stringify(this.movesArray);
-  nextMoveString = JSON.stringify([x + 1, y]);
-  console.log('NEXT MOVE',nextMoveString)
-  if (movesArrayString.indexOf(nextMoveString) !== -1) {
-    console.log('TARGETED MOVE SUCCESSFUL')
+  nextMoveStringX = JSON.stringify([x + 1, y]);
+  nextMoveStringY = JSON.stringify([x, y + 1]);
+  if (movesArrayString.indexOf(nextMoveStringX) !== -1 && y_switch !== true) {
+    console.log('X AXIS TARGETED MOVE IS POSSIBLE')
+    console.log('NEXT MOVE X',nextMoveStringX)
     isSuccess = this.move(x + 1, y, number);
     if (isSuccess) {
-      console.log('ATTEMPT NESTED TARGETED move')
-      this.targetedMove(x + 1, y, randomNumber);
-    };
+      console.log('X AXIS TARGETED MOVE HIT TARGET')
+      console.log('ATTEMPT X NESTED TARGETED move')
+      this.targetedMove(x + 1, y, number);
+    }
+  else {
+    console.log('X Axis targeted move not possible. Y AXIS Target attempt')
+    console.log('NEXT MOVE Y',nextMoveStringY)
+    if (movesArrayString.indexOf(nextMoveStringY) !== -1) {
+      console.log('Y AXIS MOVE is possible')
+      isSuccess = this.move(x, y + 1, number);
+      if (isSuccess) {
+        console.log('Y AXIS TARGETED MOVE HIT TARGET')
+        console.log('ATTEMPT Y NESTED TARGETED move')
+        this.targetedMove(x, y + 1, number, true);
+      }
+    }
+  }
   };
 };
 
 BattleshipGrid.prototype.move = function (x, y, number) {
+  if (this.isGameOver()) {
+    console.log('GAME OVER')
+    console.log(this.printGrid())
+    process.exit(55-i)//exit code = 45
+    console.log('Process exited')
+  }
+  this.moveCounter ++
+  console.log('Number of moves',this.moveCounter)
+
   this.randomNumberCeiling --
   let isHit = false
   if (this.isShip(x, y)) {
@@ -181,4 +208,4 @@ let testcomputerAttack = function(n, array) {
   else { console.log('Computer game over - test failed') }
 };
 
-testcomputerAttack(4, [1, 1, 1, 1,0,0,0,1,0,0, 0, 1, 0, 0, 0 ,0]);
+testcomputerAttack(4, [1, 1, 1, 1,1,0,0,1,1,0, 0, 1, 1, 0, 0 ,0]);
