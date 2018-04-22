@@ -78,7 +78,11 @@ BattleshipGrid.prototype.targetedMove = function (x, y, number) {
   console.log('NEXT MOVE',nextMoveString)
   if (movesArrayString.indexOf(nextMoveString) !== -1) {
     console.log('TARGETED MOVE SUCCESSFUL')
-    this.move(x + 1, y, number);
+    isSuccess = this.move(x + 1, y, number);
+    if (isSuccess) {
+      console.log('ATTEMPT NESTED TARGETED move')
+      this.targetedMove(x + 1, y, randomNumber);
+    };
   };
 };
 
