@@ -51,15 +51,9 @@ BattleshipGrid.prototype.computerAttack = function () {
   for (i = 0; i < max ; i++) {
     this.moveCounter ++
     console.log('moveCounter', this.moveCounter)
-
-    randomNumber = getRandomInt(randomNumberCeiling)
-    randomNumberCeiling --
-
-    x = this.movesArray[randomNumber][0]
-    y = this.movesArray[randomNumber][1]
-    this.movesArray.splice(randomNumber, 1);
+    move = this.randomMove();
     console.log(this.movesArray)
-    this.updateGridAttack(x, y);
+    this.updateGridAttack(move[0], move[1]);
     if (this.isGameOver()) {
       break;
     }
@@ -72,6 +66,7 @@ BattleshipGrid.prototype.randomMove = function () {
   x = this.movesArray[randomNumber][0]
   y = this.movesArray[randomNumber][1]
   this.movesArray.splice(randomNumber, 1);
+  return [x,y]
 };
 
 function getRandomInt(max) {
