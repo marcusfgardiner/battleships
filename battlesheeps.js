@@ -36,13 +36,13 @@ BattleshipGrid.prototype.dotsStars = function (element) {
 };
 
 BattleshipGrid.prototype.updateGridAttack = function (x, y) {
-    index = ((this.n * (y-1)) + (x-1))
-    if (this.isShip(index)) {
+    if (this.isShip(x, y)) {
       this.grid[index] = '@'
     }
 };
 
-BattleshipGrid.prototype.isShip = function (index) {
+BattleshipGrid.prototype.isShip = function (x, y) {
+  index = ((this.n * (y-1)) + (x-1))
   return this.grid[index] === '*'
 };
 
