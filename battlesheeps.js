@@ -47,25 +47,36 @@ BattleshipGrid.prototype.isGameOver = function () {
 };
 
 BattleshipGrid.prototype.computerAttack = function () {
+  randomNumberCeiling = this.grid.length
   for (i = 0; i < max ; i++) {
     this.moveCounter ++
     console.log('moveCounter', this.moveCounter)
-    x = this.movesArray[i][0]
-    y = this.movesArray[i][1]
-    // this.movesArray
 
-    let index = array.indexOf(this.movesArray[i]);
-    if (index > -1) {
-      array.splice(index, 1);
-    }
+    randomNumber = getRandomInt(randomNumberCeiling)
+    randomNumberCeiling --
+
+    x = this.movesArray[randomNumber][0]
+    y = this.movesArray[randomNumber][1]
+    this.movesArray.splice(randomNumber, 1);
     console.log(this.movesArray)
-
     this.updateGridAttack(x, y);
     if (this.isGameOver()) {
       break;
     }
   }
 };
+
+BattleshipGrid.prototype.randomMove = function () {
+  randomNumber = getRandomInt(randomNumberCeiling)
+  randomNumberCeiling --
+  x = this.movesArray[randomNumber][0]
+  y = this.movesArray[randomNumber][1]
+  this.movesArray.splice(randomNumber, 1);
+};
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
 
 BattleshipGrid.prototype.possibleMoves = function () {
   x = 1
