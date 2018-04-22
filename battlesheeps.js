@@ -37,9 +37,13 @@ BattleshipGrid.prototype.dotsStars = function (element) {
 
 BattleshipGrid.prototype.updateGridAttack = function (x, y) {
     index = ((this.n * (y-1)) + (x-1))
-    if (this.grid[index] === '*') {
+    if (this.isShip(index)) {
       this.grid[index] = '@'
     }
+};
+
+BattleshipGrid.prototype.isShip = function (index) {
+  return this.grid[index] === '*'
 };
 
 BattleshipGrid.prototype.isGameOver = function () {
@@ -98,8 +102,6 @@ let testPossibleMoves = function (n, array) {
 };
 
 testPossibleMoves(4, [1, 1, 0, 1,0,0,0,1,0,0, 0, 1, 0, 0, 0 ,0]);
-
-
 
 let testGrid = function (n, array) {
   newGrid = new BattleshipGrid(n, array);
